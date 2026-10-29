@@ -1,0 +1,87 @@
+package exampleviews
+
+import (
+	"fmt"
+	"time"
+)
+
+type CrudItem struct {
+	ID          string
+	Title       string
+	Description string
+	Status      string
+	CreatedAt   time.Time
+}
+
+templ Index(items []CrudItem) {
+	<!DOCTYPE html>
+	<html lang="en">
+		<head>
+			<meta charset="utf-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<title>Example CRUDs - Go Starter Kit</title>
+			<link rel="stylesheet" href="/public/css/output.css"/>
+		</head>
+		<body class="min-h-screen bg-slate-50 font-sans text-slate-900 antialiased p-6 sm:p-10">
+			<div class="max-w-4xl mx-auto">
+				<!-- Header Card -->
+				<div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+					<div>
+						<h1 class="text-2xl font-bold tracking-tight text-slate-900">Example CRUD Items</h1>
+						<p class="text-sm text-slate-500 mt-1">Server-Side Rendered dengan a-h/templ & Tailwind CSS</p>
+					</div>
+					<a
+						href="/example/cruds/create"
+						class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow-sm transition focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+					>
+						+ Tambah Item Baru
+					</a>
+				</div>
+
+				<!-- Content Card -->
+				<div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+					if len(items) == 0 {
+						<div class="p-12 text-center">
+							<div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-slate-100 text-slate-400 mb-4">
+								<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path>
+								</svg>
+							</div>
+							<h3 class="text-base font-semibold text-slate-800">Belum ada item</h3>
+							<p class="text-sm text-slate-500 mt-1">Mulai buat data pertama Anda sekarang.</p>
+						</div>
+					} else {
+						<div class="overflow-x-auto">
+							<table class="min-w-full divide-y divide-slate-200">
+								<thead class="bg-slate-50">
+									<tr>
+										<th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Title</th>
+										<th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Description</th>
+										<th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Status</th>
+										<th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Created At</th>
+									</tr>
+								</thead>
+								<tbody class="divide-y divide-slate-200 bg-white">
+									for _, item := range items {
+										<tr class="hover:bg-slate-50/80 transition-colors">
+											<td class="px-6 py-4 text-sm font-semibold text-slate-900">{ item.Title }</td>
+											<td class="px-6 py-4 text-sm text-slate-600">{ item.Description }</td>
+											<td class="px-6 py-4 text-sm">
+												<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800">
+													{ item.Status }
+												</span>
+											</td>
+											<td class="px-6 py-4 text-sm text-slate-500 whitespace-nowrap">
+												{ fmt.Sprintf("%02d-%02d-%d", item.CreatedAt.Day(), item.CreatedAt.Month(), item.CreatedAt.Year()) }
+											</td>
+										</tr>
+									}
+								</tbody>
+							</table>
+						</div>
+					}
+				</div>
+			</div>
+		</body>
+	</html>
+}
