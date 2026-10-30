@@ -1,4 +1,4 @@
-.PHONY: dev dev-web worker test templ migrate migrate-status migrate-rollback build clean tailwind-install css css-watch
+.PHONY: dev dev-web worker test templ migrate migrate-status migrate-rollback seed seed-mysql seed-pg build clean tailwind-install css css-watch
 
 # Jalankan HTTP REST API & Web Server (Default: API-First, ringan, tanpa CSS watcher)
 dev:
@@ -51,6 +51,18 @@ migrate-status:
 # Rollback Migrasi Terakhir
 migrate-rollback:
 	go run cmd/make/main.go migrate:down --db=sqlite1
+
+# Database Seeding (Default: sqlite1)
+seed:
+	go run cmd/make/main.go db:seed --db=sqlite1
+
+# Database Seeding MySQL saja (sqlite & db lain tidak disentuh)
+seed-mysql:
+	go run cmd/make/main.go db:seed --db=mysql1
+
+# Database Seeding PostgreSQL saja
+seed-pg:
+	go run cmd/make/main.go db:seed --db=pg1
 
 # Build single binary mandiri di direktori bin/
 build:
